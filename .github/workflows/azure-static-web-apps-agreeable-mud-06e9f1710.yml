@@ -17,9 +17,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          node-version: '18.x'
           submodules: true
           lfs: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
 
       - name: Build And Deploy
         id: builddeploy
