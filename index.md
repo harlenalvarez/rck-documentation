@@ -5,13 +5,11 @@ layout: home
 hero:
   name: "React Canvas Kit"
   text: "HTML 5 Canvas toolkit for React Apps"
+  tagline: "Documentation in progress"
   actions:
     - theme: brand
       text: Get Started
       link: /guide/
-    - theme: alt
-      text: API Examples
-      link: /api-examples
 
 features:
   
