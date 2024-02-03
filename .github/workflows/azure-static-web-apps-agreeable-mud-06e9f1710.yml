@@ -17,6 +17,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          node-verion: 18
           submodules: true
           lfs: false
       - uses: actions/setup-node@v4
