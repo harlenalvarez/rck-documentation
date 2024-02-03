@@ -4,7 +4,9 @@ import { defineConfig } from 'vitepress'
 export default defineConfig({
   title: "React Canvas Kit",
   description: "HTML 5 Canvas toolkit for React Apps",
+  head: [['link', { rel: 'icon', href: '/rck.png' }]],
   themeConfig: {
+    logo: 'logo.min.svg',
     // https://vitepress.dev/reference/default-theme-config
     nav: [
       { text: 'Home', link: '/' },

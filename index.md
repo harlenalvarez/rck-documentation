@@ -6,6 +6,10 @@ hero:
   name: "React Canvas Kit"
   text: "HTML 5 Canvas toolkit for React Apps"
   tagline: "Documentation in progress"
+  image:
+    src: /logo.min.svg
+    alt: VitePress
+    width: 600px;
   actions:
     - theme: brand
       text: Get Started

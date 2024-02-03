@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "start": "vitepress dev",
+    "start": "vitepress dev --port 5174",
     "build": "vitepress build",
     "preview": "vitepress preview"
   },
