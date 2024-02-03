@@ -1,0 +1,4 @@
+---
+layout: doc
+---
+# Canvas Rendering
