@@ -4,8 +4,8 @@ prev:
  text: 'Get Started'
  link: '/guide/index'
 next:
- text: 'FAB and Canvas Transform'
- link: '/guide/canvas-transform'
+ text: 'Rendering'
+ link: '/guide/canvas-rendering'
 ---
 
 ## Add CanvasController (FAB)
@@ -21,7 +21,7 @@ export const StopPropagation = ({ children }: React.PropsWithChildren) => {
   // Using `display: contents` to avoid adding extra styling or layout changes, 
   // while still being able to capture and stop events.
   return (
-    <div style={{ display: 'contents' }} onClick={stopPropagation} onPointerMove={stopPropagation} onKeyUp={stopPropagation} onKeyDown={stopPropagation}>
+    <div style={{ display: 'contents' }} onPointerUp={stopPropagation} onPointerDown={stopPropagation} onClick={stopPropagation} onPointerMove={stopPropagation} onKeyUp={stopPropagation} onKeyDown={stopPropagation}>
       {children}
     </div>
   );

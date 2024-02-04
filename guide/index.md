@@ -9,7 +9,7 @@ next:
 # Getting started
 ## Overview
 
-React Canvas Kit (RCK) is a comprehensive toolkit designed to streamline the integration and management of canvas functionalities within React applications. This toolkit facilitates a range of common canvas operations from initial setup and managing transformations to handling user events and rendering interactive popovers. With added support for scrollbar management in beta, RCK enhances the developer experience by simplifying the use of the Canvas API, while still providing full access to its comprehensive set of tools. <Badge type="warning" text="beta" />.
+React Canvas Kit (RCK) is a comprehensive toolkit designed to streamline the integration and management of canvas functionalities within React applications. This toolkit facilitates a range of common canvas operations from initial setup and managing transformations to handling user events and rendering interactive popovers. With added support for scrollbar management <Badge type="warning" text="beta" />, RCK enhances the developer experience by simplifying the use of the Canvas API, while still providing full access to its comprehensive set of tools.
 
 ## Installation
 Install the react canvas kit and it's dependencies
