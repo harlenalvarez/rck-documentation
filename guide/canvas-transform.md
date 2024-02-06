@@ -7,6 +7,7 @@ next:
  text: 'Rendering'
  link: '/guide/canvas-rendering'
 ---
+# Canvas Floating Action Buttons (FAB)
 
 ## Add CanvasController (FAB)
 Now that it's time to add our first FAB, it's important to keep in mind that clicking on any FAB will trigger event propagation into the CanvasContainer. For example, if you are listening to click events to draw a shape, then clicking on the FAB will also trigger that event. To prevent this from happening, you would typically need to stop propagation and prevent default actions for each event. However, instead of adding that logic to every individual event, you can simply create a StopPropagation.tsx file that wraps all your FABs, effectively managing event propagation centrally.

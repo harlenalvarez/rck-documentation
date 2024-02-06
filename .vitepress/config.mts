@@ -26,7 +26,9 @@ export default defineConfig({
         items: [
           { text: 'CanvasContainer', link: '/component-api/canvas-container' },
           { text: 'Built in Interactions', link: '/component-api/interactions' },
-          { text: 'CanvasTransform', link: '/component-api/canvas-transform-api' }
+          { text: 'CanvasTransform', link: '/component-api/canvas-transform-api' },
+          { text: 'getCanvas2DContext', link: '/component-api/canvas-get2dcontext' },
+          { text: 'Rendering Events', link: '/component-api/canvas-render-events' }
         ]
       },
       {
@@ -36,7 +38,9 @@ export default defineConfig({
         ]
       }
     ],
-
+    outline: {
+      level: 'deep'
+    },
     socialLinks: [
       { icon: 'github', link: 'https://github.com/harlenalvarez/react-canvas-kit' }
     ],

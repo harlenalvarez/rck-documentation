@@ -2,7 +2,7 @@
 layout: doc
 prev: false
 next:
- text: 'FAB and Canvas Transform'
+ text: 'Canvas Floating Action Buttons'
  link: '/guide/canvas-transform'
 ---
 
@@ -10,6 +10,9 @@ next:
 ## Overview
 
 React Canvas Kit (RCK) is a comprehensive toolkit designed to streamline the integration and management of canvas functionalities within React applications. This toolkit facilitates a range of common canvas operations from initial setup and managing transformations to handling user events and rendering interactive popovers. With added support for scrollbar management <Badge type="warning" text="beta" />, RCK enhances the developer experience by simplifying the use of the Canvas API, while still providing full access to its comprehensive set of tools.
+
+## Pre-requisite
+Before proceeding, ensure you have a React application set up. If you need to create one, you can use your preferred tool or framework. For example, [Vite](https://vitejs.dev/guide/#scaffolding-your-first-vite-project) offers a quick and efficient way to scaffold a new React project. Follow the linked guide for step-by-step instructions on setting up a project with Vite.
 
 ## Installation
 Install the react canvas kit and it's dependencies
