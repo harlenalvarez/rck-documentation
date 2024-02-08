@@ -18,7 +18,8 @@ export default defineConfig({
         items: [
           { text: 'Get Started', link: '/guide/index' },
           { text: 'Add CanvasController (FAB)', link: '/guide/canvas-transform' },
-          { text: 'Canvas Rendering', link: '/guide/canvas-rendering' }
+          { text: 'Canvas Rendering', link: '/guide/canvas-rendering' },
+          { text: 'Tracking', link: '/guide/canvas-tracking' }
         ]
       },
       {

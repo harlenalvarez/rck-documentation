@@ -3,7 +3,9 @@ layout: doc
 prev:
  text: 'Canvas Floating Action Buttons'
  link: '/guide/canvas-transform'
-next: false
+next:
+ text: 'Tracking'
+ link: '/guid/canvas-tracking'
 ---
 # Canvas Rendering
 
@@ -124,7 +126,7 @@ const drawOnClick: ReactEventHandler<React.PointerEvent> = (_: React.PointerEven
     ctx.beginPath(); // [!code ++]
     const path = new Path2D(); // [!code ++]
     path.rect(x, y, 100, 100); // [!code ++]
-    systemDesignContext.paths.push(path); // [!code ++]
+    canvasState.paths.push(path); // [!code ++]
     ctx.fillStyle = 'white'; // [!code ++]
     ctx.fill(path); // [!code ++]
     ctx.stroke(path); // [!code ++]
@@ -168,7 +170,7 @@ const drawOnClick: ReactEventHandler<React.PointerEvent> = (_: React.PointerEven
   ctx.beginPath(); 
   const path = new Path2D();
   path.rect(x, y, 100, 100);
-  systemDesignContext.paths.push(path);
+  canvasState.paths.push(path);
   ctx.fillStyle = 'white';
   ctx.fill(path);
   ctx.stroke(path);
@@ -181,7 +183,7 @@ const redraw = () => { // [!code ++]
   // always clear the canvas // [!code ++]
   clearAll(ctx); // [!code ++]
   requestAnimationFrame(() => { // [!code ++]
-    systemDesignContext.paths.forEach(p => { // [!code ++]
+    canvasState.paths.forEach(p => { // [!code ++]
       ctx.beginPath(); // [!code ++]
       ctx.fillStyle = 'white'; // [!code ++]
       ctx.fill(p); // [!code ++]
