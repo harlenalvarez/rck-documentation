@@ -191,3 +191,167 @@ export const CanvasManager = () => {
 :::
 
 Finally in your `CanvasManager` add the pointerMoveMiddleware event.
+
+## Dragging Shapes
+Dragging shapes across the canvas is a common feature in interactive applications. In RCK, when a shape is moved, it's essential to update its tracking point accordingly. This ensures that the shape's position remains synchronized with the canvas's transformation matrix.
+
+To facilitate this, we will extend our `RectanglePath2D` class to include a changePosition method. This method will be responsible for updating the shape's position and, consequently, its tracking point. The specific point passed to this method—whether it's the top-left corner of a rectangle or the center of a circle—depends on the shape's geometry.
+
+```ts [RectanglePath2D]
+import { Point } from '@practicaljs/canvas-kit';
+import { CanvasPath2D, canvasTransform } from '@practicaljs/react-canvas-kit'; // [!code ++]
+
+export class RectanglePath2D extends CanvasPath2D {
+  topLeft: Point
+  width: number
+  height: number
+  square: Path2D
+  constructor(key: string, topLeft: Point, width: number, height: number) {
+    super ({
+      key,
+      trackingPoint: {
+        x: topLeft.x - width / 2,
+        y: topLeft.y - height / 2
+      }
+    });
+    this.topLeft = topLeft;
+    this.width = width;
+    this.height = height;
+    this.square = new Path2D();
+    this.square.rect(this.topLeft.x, this.topLeft.y, this.width, this.height);
+  }
+
+  getTrackingPoint() { // [!code ++]
+    const centerX = this.topLeft.x - this.width / 2; // [!code ++]
+    const centerY = this.topLeft.y - this.height / 2; // [!code ++]
+    return { // [!code ++]
+      x: centerX, // [!code ++]
+      y: centerY // [!code ++]
+    } // [!code ++]
+  } // [!code ++]
+
+  changePosition(position: Point): void { // [!code ++]
+    this.topLeft = { ...position }; // [!code ++]
+    this.trackingPoint = this.getTrackingPoint(); // [!code ++]
+    canvasTransform.trackShape(this.key, this.trackingPoint.x, this.trackingPoint.y); // [!code ++]
+  } // [!code ++]
+}
+```
+## Implementing Drag Functionality
+To enable dragging of shapes on the canvas, we'll introduce three pointer event handlers within our middleware: onDragStart, onDrag, and onDragStop. These handlers will manage the initiation, progression, and termination of the drag operation, ensuring smooth and intuitive interaction with canvas elements.
+
+`onDragStart`: Initializing Drag
+This event triggers on a primary button press over an element. It calculates and stores the mouse offset relative to the element's position to prevent the shape from "teleporting" to the mouse position upon dragging.
+
+`onDrag`: Dragging the Shape
+Triggered by mouse movement with the primary button pressed, this event calls the changePosition method to move the shape. It ensures dragging only occurs when the primary button is down and the cursor hovers over a shape.
+
+`onDragStop`: Ending the Drag
+Though not strictly necessary, this event resets the cursor from 'grabbing' back to the default upon releasing the primary button, finalizing the drag operation.
+
+All three events are defined in drag.pointerEvent.ts and integrated into our existing middleware for comprehensive drag support.
+
+Here's how these events are implemented:
+::: code-group
+```ts [drag.pointerEvent.ts]
+import { getCanvasPoint } from '@practicaljs/canvas-kit';
+import { requestRedraw, getCanvas2DContext } from '@practicaljs/react-canvas-kit';
+import { PointerEventButton, PointerEventButtons } from './pointerEvents';
+import { canvasState } from './CanvasState';
+
+export const onDragStart = (e: React.PointerEvent) => {
+  const ctx = getCanvas2DContext()!;
+  if (e.button === PointerEventButton.primary && canvasState.hoveredElement) {
+    const component = canvasState.paths.get(canvasState.hoveredElement);
+    if (!component) {
+      return true;
+    }
+    const [x, y] = getCanvasPoint(e.nativeEvent.offsetX, e.nativeEvent.offsetY, ctx);
+    const offsetX = x - component.topLeft.x;
+    const offsetY = y - component.topLeft.y;
+    systemDesignContext.dragOffset = { x: offsetX, y: offsetY };
+    return false;
+  }
+  return true;
+}
+
+export const onDrag = withCanvasContextReturn<boolean>((ctx: CanvasRenderingContext2D, e: React.PointerEvent) => {
+  if (
+    !(e.buttons & PointerEventButtons.primary) ||
+    !systemDesignContext.hoveredElement ||
+    selectionContext.selectedType !== 'select') return true;
+  e.preventDefault();
+  if(document.body.style.cursor !== 'grabbing') {
+        document.body.style.cursor = 'grabbing';
+  }
+  const [canvasX, canvasY] = getCanvasPoint(e.nativeEvent.offsetX, e.nativeEvent.offsetY, ctx);
+  const newX = canvasX - systemDesignContext.dragOffset.x;
+  const newY = canvasY - systemDesignContext.dragOffset.y;
+  const component = systemDesignContext.get(systemDesignContext.hoveredElement)!;
+  component.changePosition({ x: newX, y: newY });
+  requestRedraw();
+  return false;
+}, true);
+
+export const onDragStop = (e: React.PointerEvent) => {
+  if (e.button === PointerEventButton.primary && document.body.style.cursor === 'default') {
+    e.preventDefault();
+    document.body.style.cursor = 'default';
+    systemDesignContext.dragOffset = { x: 0, y: 0 };
+    return false;
+  }
+  return true;
+}
+```
+```ts [pointerEvents.ts]
+// These enums are the values for PointerEvent.button and PointerEvent.buttons (MouseEvent as well)
+// The values are the ones documented in the MDN docs
+//https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/button
+export enum PointerEventButton {
+  primary = 0, // left click
+  auxiliary = 1,
+  secondary = 2,
+  fourth = 3,
+  fifth = 4,
+}
+
+//https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/buttons
+export enum PointerEventButtons {
+  none = 0,
+  primary = 1 << 0, // left click
+  secondary = 1 << 1, // right click
+  auxiliary = 1 << 2, // mouse wheel
+  fourth = 1 << 3, // browser back
+  fifth = 1 << 4, // browser forward
+}
+```
+:::
+
+To fully integrate our new drag functionality, we must register the event handlers with the middlewares we've established. The order in which you add these events to the middleware is crucial. Specifically, the drag event should precede the hover check during a move action, as hover checks are unnecessary while dragging a shape. Additionally, we need to ensure the pointer down event is correctly set up in the Canvas Manager to initiate dragging.
+
+Here’s how to update your middleware registrations and the Canvas Manager component:
+::: code-group
+```ts [CanvasManager.middleware.ts]
+import { checkHover } from '../CanvasEvents';
+
+export const pointerDownMiddleware = new ReactEventMiddleware<React.PointerEvent>(new Set([onDragStart]));
+export const pointerMoveMiddleware = new ReactEventMiddleware<React.PointerEvent>(new Set([onDrag, checkHover]));
+export const pointerUpMiddleware = new ReactEventMiddleware<React.PointerEvent>(new Set[onDragStop]);
+```
+
+```tsx [CanvasManager.tsx]
+export const CanvasManager = () => {
+  useRedrawEvent(redraw, []);
+  useReactEventMiddleware<React.PointerEvent>(pointerUpMiddleware, drawOnClick);
+  return (
+    <CanvasGridContainer
+      onPointerDown={pointerDownMiddleware.handleEvent}
+      onPointerMove={pointerMoveMiddleware.handleEvent}
+      onPointerUp={pointerUpMiddleware.handleEvent}>
+      <CanvasController />
+    </CanvasGridContainer>
+  )
+}
+```
+:::
+By following these steps, you integrate the drag and hover functionalities seamlessly into your canvas application. The order of middleware registration ensures that drag operations take precedence over hover checks when necessary, providing a more intuitive and responsive user experience.
