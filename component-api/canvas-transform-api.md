@@ -72,6 +72,17 @@ canvasTransform.trackShape('shape1', 100, 150);
 // Add another shape, 'shape2', to be tracked at (200, 250)
 canvasTransform.trackShape('shape2', 200, 250);
 ```
+## removeTrackedShape <Badge type="tip" text="^1.3.1" />
+`removeTrackedShape(key: string)`
+Removes a tracked shape by key.
+### Parameters
+ * `key`: A unique identifier for the shape being tracked. This ID is used to distinguish individual shapes, allowing for their positions to be updated or removed from tracking as needed.
+### Effect
+Removes the track shape and recalculates the coordinates. Log(n) operation.
+### Usage Example
+```ts
+canvasTransform.removeTrackedShape('shape1');
+```
 ## recenter
 `recenter(ctx: CanvasRenderingContext2D, x?: number, y?: number)`
 Repositions the canvas view to center on a specific point or defaults to the center of the canvas if no point is specified. This method is crucial for adjusting the focal point of the canvas, especially after zooming or when the user needs to focus on a particular area.
