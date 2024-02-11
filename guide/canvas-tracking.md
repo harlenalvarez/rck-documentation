@@ -237,6 +237,15 @@ export class RectanglePath2D extends CanvasPath2D {
   } // [!code ++]
 }
 ```
+## Types of tracking
+Earlier, we introduced how to obtain a tracking point—typically the center—during dragging, followed by invoking `canvasTransform.trackShape`. This method allows the canvas transform to track the centers of shapes. However, it does not account for tracking the entire content of a shape. To achieve comprehensive tracking, you should use `canvasTransform.trackShapeContent`.
+
+With `canvasTransform.trackShapeContent`, you can specify the top-left and bottom-right points of your content, effectively covering the entire area. This is crucial for scenarios where understanding the full extent of your content is necessary, beyond just its central point.
+
+Determining these specific coordinates is beyond the scope of this guide. A practical approach involves enclosing your shape within a rectangle and using the rectangle's top-left and bottom-right points as references. While this method is quick, it's essential to note that more precise techniques may be required for complex shapes.
+
+> Note: Detailed methods for calculating these points may vary based on your application's specific needs and are subject to the tools and libraries you're using.
+
 ## Implementing Drag Functionality
 To enable dragging of shapes on the canvas, we'll introduce three pointer event handlers within our middleware: onDragStart, onDrag, and onDragStop. These handlers will manage the initiation, progression, and termination of the drag operation, ensuring smooth and intuitive interaction with canvas elements.
 

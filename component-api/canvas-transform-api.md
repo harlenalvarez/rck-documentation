@@ -72,6 +72,21 @@ canvasTransform.trackShape('shape1', 100, 150);
 // Add another shape, 'shape2', to be tracked at (200, 250)
 canvasTransform.trackShape('shape2', 200, 250);
 ```
+## trackShapeContent <Badge type="tip" text="^1.3.2" />
+`trackShapeContent(key: string, x: number, y: number, x1: number, y1: number)`
+Registers a canvas shape or component for tracking within the canvas's coordinate system just like `trackShape`. The key difference is that by specifying the shape's top-left and bottom-right points, it can track shapes more accurately by considering their entire content area.
+### Parameters
+ * `key`: A unique identifier for the shape being tracked. This ID is used to distinguish individual shapes, allowing for their positions to be updated or removed from tracking as needed.
+ * `x`,`y`: The top-left corner's x and y coordinates of the shape on the canvas, respectively.
+ * `x1`, `y1`: The bottom-right corner's x and y coordinates of the shape on the canvas, respectively.
+
+### Effect
+Upon invocation, this method updates internal tracking structures to include the new shape, effectively expanding the known content bounds if the shape lies outside the current bounds. It ensures that functionalities relying on content boundaries, such as auto-scaling or recentering, accurately reflect the presence of this shape.
+### Usage Example
+```ts
+// Track a square at point ( 10, 10 ) width a size length of 100px;
+canvasTransform.trackShapeContent('rect-unique-key', 10, 10, 110, 110);
+```
 ## removeTrackedShape <Badge type="tip" text="^1.3.1" />
 `removeTrackedShape(key: string)`
 Removes a tracked shape by key.

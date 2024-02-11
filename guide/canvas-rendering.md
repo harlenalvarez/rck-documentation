@@ -5,7 +5,7 @@ prev:
  link: '/guide/canvas-transform'
 next:
  text: 'Tracking'
- link: '/guid/canvas-tracking'
+ link: '/guide/canvas-tracking'
 ---
 # Canvas Rendering
 
