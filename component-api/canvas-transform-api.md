@@ -72,7 +72,7 @@ canvasTransform.trackShape('shape1', 100, 150);
 // Add another shape, 'shape2', to be tracked at (200, 250)
 canvasTransform.trackShape('shape2', 200, 250);
 ```
-## trackShapeContent <Badge type="tip" text="^1.3.2" />
+## trackShapeContent <Badge type="tip" text="^1.3.3" />
 `trackShapeContent(key: string, x: number, y: number, x1: number, y1: number)`
 Registers a canvas shape or component for tracking within the canvas's coordinate system just like `trackShape`. The key difference is that by specifying the shape's top-left and bottom-right points, it can track shapes more accurately by considering their entire content area.
 ### Parameters
